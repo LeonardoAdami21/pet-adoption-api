@@ -1,0 +1,9 @@
+{
+  "name": "pet-adoption-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "nodemon src/server.js"}
+}
