@@ -4,6 +4,17 @@
   "main": "server.js",
   "license": "MIT",
   "private": false,
+  "type": "module",
   "scripts": {
-    "start": "nodemon src/server.js"}
+    "start": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
