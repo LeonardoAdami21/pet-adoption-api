@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mongo:latest
+    container_name: pet-adoption-db
+    env_file:
+      - .env
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    restart: always
