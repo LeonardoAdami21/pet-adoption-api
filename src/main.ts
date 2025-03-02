@@ -19,39 +19,6 @@ async function bootstrap() {
   app.use(express.json({ limit: '10000mb' }));
   initSwagger(app);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      stopAtFirstError: true,
-      exceptionFactory: (errors: any) => {
-        const erros = {};
-
-        for (const error of errors) {
-          const property = error?.property;
-          const constraints = error?.constraints;
-          const children = error?.children;
-
-          if (constraints) {
-            erros[property] = constraints[Object.keys(constraints)[0]];
-            continue;
-          }
-
-          for (const child of children) {
-            const childProperty = child?.property;
-            const childConstraints = child?.constraints;
-            erros[property] = {
-              ...erros[property],
-              [childProperty]: Object.values(childConstraints)[0],
-            };
-          }
-        }
-
-        throw new BadRequestException({ erros });
-      },
-    }),
-  );
 
   app.listen(PORT, '0.0.0.0', async () => {
     logger.log(`Running At: ${await app.getUrl()}`);
