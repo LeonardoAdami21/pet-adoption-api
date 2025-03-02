@@ -5,7 +5,7 @@ import { DATA_SOURCE } from './datasource.provider.js';
 export const databaseProviders = [
   {
     provide: DATA_SOURCE,
-    useFactory: async (): Promise<typeof mongoose> => {
+    useFactory: async () => {
       try {
         const connection = await mongoose.connect(MONGODB_URI);
         return connection;
