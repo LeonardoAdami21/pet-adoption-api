@@ -5,28 +5,28 @@ export type PetDocument = HydratedDocument<Pet> & Document;
 
 @Schema({ timestamps: true })
 export class Pet {
-  @Prop({ required: true })
+  @Prop()
   name: string;
 
   @Prop({ required: true, type: Number })
   age: number;
 
-  @Prop({ required: true })
+  @Prop()
   area: string;
 
-  @Prop({ required: true })
+  @Prop()
   justification: string;
 
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
   phone: string;
 
-  @Prop({ required: true })
+  @Prop()
   type: string;
 
-  @Prop({ required: true })
+  @Prop()
   filename: string;
 
   @Prop({type: String, default: 'Pendente'})
