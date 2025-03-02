@@ -4,7 +4,6 @@
   "main": "server.js",
   "license": "MIT",
   "private": false,
-  "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -35,6 +34,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
     "mongoose": "^8.10.1",
     "multer": "^1.4.5-lts.1",
     "nest-winston": "^1.10.2",
