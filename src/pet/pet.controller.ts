@@ -7,11 +7,15 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PetService } from './pet.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import {
   ApiBadRequestResponse,
+  ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -20,6 +24,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AprovePetDto } from './dto/aprove-pet.dto';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
 
 @Controller('pets')
 @ApiTags('Pets')
@@ -41,8 +48,70 @@ export class PetController {
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
   @Post()
-  createPet(@Body() dto: CreatePetDto) {
-    return this.petService.createPet(dto);
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          example: 'Kitty',
+        },
+        age: {
+          type: 'number',
+          example: 3,
+        },
+        area: {
+          type: 'string',
+          example: 'Recife',
+        },
+        justification: {
+          type: 'string',
+          example: 'I want to adopt a pet',
+        },
+        email: {
+          type: 'string',
+          example: 'G7O4o@example.com',
+        },
+        phone: {
+          type: 'string',
+          example: '81999999999',
+        },
+        filename: {
+          type: 'string',
+          format: 'binary',
+          example: 'image.jpg',
+        },
+        type: {
+          type: 'string',
+          example: 'Cat',
+        },
+      },
+    },
+  })
+  @UseInterceptors(
+    FileInterceptor('filename', {
+      storage: diskStorage({
+        destination: '/tmp', // Define onde os arquivos serão salvos
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            file.fieldname +
+              '-' +
+              uniqueSuffix +
+              path.extname(file.originalname),
+          );
+        },
+      }),
+    }),
+  )
+  createPet(
+    @Body() dto: CreatePetDto,
+    @UploadedFile('filename') filename: Express.Multer.File,
+  ) {
+    return this.petService.createPet(dto, filename);
   }
 
   @ApiOperation({ summary: 'Approve a pet' })
