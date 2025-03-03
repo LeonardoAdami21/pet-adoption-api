@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { databaseProviders } from './config/mongo.config';
 import { PetModule } from './pet/pet.module';
+import { AdoptionModule } from './adoption/adoption.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PetModule } from './pet/pet.module';
       isGlobal: true,
     }),
     PetModule,
+    AdoptionModule,
   ],
   providers: [...databaseProviders],
   exports: [...databaseProviders],

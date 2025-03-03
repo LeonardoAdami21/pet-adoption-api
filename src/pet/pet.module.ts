@@ -8,6 +8,6 @@ import { petProviders } from './provider/pet.repository';
   imports: [DatabaseModule],
   controllers: [PetController],
   providers: [PetService, ...petProviders],
-  exports: [],
+  exports: [PetService],
 })
 export class PetModule {}

@@ -17,7 +17,7 @@ export class PetService {
   constructor(@Inject(PET__MODEL) private readonly petModel: Model<Pet>) {}
   private logger = new Logger('PetService');
 
-  async createPet(dto: CreatePetDto) {
+  async createPet(dto: CreatePetDto, filename: Express.Multer.File) {
     try {
       const { name, age, area, justification, email, phone, type } = dto;
       if (
@@ -40,10 +40,10 @@ export class PetService {
       if (existingPet) {
         throw new BadRequestException('Pet already exists');
       }
-      if (!dto.filename) {
+      if (filename) {
         throw new BadRequestException('Filename is required');
       }
-      if (dto.filename) {
+      if (filename) {
         dto.filename = dto.filename;
       }
       const pet = await this.petModel.create({
@@ -122,6 +122,22 @@ export class PetService {
       await this.petModel.findByIdAndDelete({ _id: id });
       return {
         message: 'Pet deleted successfully',
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getPetById(id: string) {
+    try {
+      const pet = await this.petModel.findById(id);
+      if (!pet) {
+        throw new NotFoundException('Pet not found');
+      }
+      return {
+        message: 'Pet retrieved successfully',
+        data: pet,
       };
     } catch (error) {
       console.error(error);
